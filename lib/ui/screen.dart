@@ -7,6 +7,7 @@ export 'product/product_manager.dart';
 export 'product/product_grid.dart';
 export 'product/product_grid_tile.dart';
 export 'product/user_proudct_tile.dart';
+export 'product/favorite_manager.dart';
 export '../model/product.dart';
 
 export 'auth/auth_information_screen.dart';
@@ -35,5 +36,6 @@ export '../services/cart_service.dart';
 export '../services/order_service.dart';
 export '../services/pocketbase_client.dart';
 export '../services/products_service.dart';
+export '../services/favoriter_service.dart';
 
 export './splash_screen.dart';
