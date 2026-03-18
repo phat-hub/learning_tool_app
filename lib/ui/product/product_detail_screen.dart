@@ -62,19 +62,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           '${NumberFormat.decimalPattern().format(widget.product.price)} VNĐ',
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
-                        Container(
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.star,
-                                size: 20,
-                                color: Colors.yellow,
-                              ),
-                              Text('${widget.product.rate}/5'),
-                              FavoriteButton(widget: widget),
-                            ],
-                          ),
-                        )
                       ],
                     ),
                     SizedBox(height: 10),
@@ -427,110 +414,13 @@ class specifications extends StatelessWidget {
                           color: Theme.of(context).colorScheme.surfaceTint,
                         ),
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('RAM:'),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.ram} GB'),
-                          ),
-                        ],
-                      ),
-                      //SizedBox(height: 10),
-                      TableRow(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('ROM:'),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.rom} GB'),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                        ),
-                        children: [
                           Padding(
                             padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('Loại: '),
+                            child: Text('Mô tả sản phẩm: '),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.type}'),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('Kích thước màn hình: '),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.screenSize} "'),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                        ),
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('CPU: '),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.cpu}'),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('GPU: '),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.gpu}'),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                        ),
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('Dung lượng pin:'),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.capacity} mAh'),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('Hệ điều hành: '),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.operatingSystem}'),
+                            child: Text('${widget.product.description}'),
                           ),
                         ],
                       ),

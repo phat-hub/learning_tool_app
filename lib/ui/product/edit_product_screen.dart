@@ -16,19 +16,11 @@ class EditProductScreen extends StatefulWidget {
         id: null,
         title: '',
         price: 0,
+        description: '',
         imageURL1: '',
         imageURL2: '',
         imageURL3: '',
         imageURL4: '',
-        ram: 0,
-        rom: 0,
-        rate: 0,
-        type: '',
-        screenSize: 0,
-        cpu: '',
-        gpu: '',
-        capacity: 0,
-        operatingSystem: '',
       );
     } else {
       this.product = product;
@@ -47,15 +39,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
-  final _ramController = TextEditingController();
-  final _romController = TextEditingController();
-  final _rateController = TextEditingController();
-  final _typeController = TextEditingController();
-  final _screenSizeController = TextEditingController();
-  final _cpuController = TextEditingController();
-  final _gpuController = TextEditingController();
-  final _capacityController = TextEditingController();
-  final _operatingSystemController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -64,15 +48,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (_editProduct.id != null) {
       _nameController.text = _editProduct.title;
       _priceController.text = _editProduct.price.toString();
-      _ramController.text = _editProduct.ram.toString();
-      _romController.text = _editProduct.rom.toString();
-      _rateController.text = _editProduct.rate.toString();
-      _typeController.text = _editProduct.type;
-      _screenSizeController.text = _editProduct.screenSize.toString();
-      _cpuController.text = _editProduct.cpu;
-      _gpuController.text = _editProduct.gpu;
-      _capacityController.text = _editProduct.capacity.toString();
-      _operatingSystemController.text = _editProduct.operatingSystem;
+      _descriptionController.text = _editProduct.description;
     }
 
     super.initState();
@@ -126,33 +102,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               const SizedBox(height: 20),
               _buildPriceField(),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2 - 25,
-                    child: _buildRamField(),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2 - 25,
-                    child: _buildRomField(),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              _buildRateField(),
-              const SizedBox(height: 20),
-              _buildTypeField(),
-              const SizedBox(height: 20),
-              _buildScreenSizeField(),
-              const SizedBox(height: 20),
-              _buildCpuField(),
-              const SizedBox(height: 20),
-              _buildGpuField(),
-              const SizedBox(height: 20),
-              _buildCapacityField(),
-              const SizedBox(height: 20),
-              _buildOperatingSystemField(),
+              _buildDescriptionField(),
               const SizedBox(height: 20),
               _buildSubmitButton(),
             ],
@@ -210,12 +160,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 
-  TextFormField _buildRamField() {
+  TextFormField _buildDescriptionField() {
     return TextFormField(
-      controller: _ramController,
+      controller: _descriptionController,
       cursorColor: Colors.black,
       decoration: const InputDecoration(
-        labelText: 'RAM',
+        labelText: 'Mô tả sản phẩm',
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.black),
         ),
@@ -223,209 +173,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
       textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Vui lòng nhập dung lượng RAM';
-        } else if (int.tryParse(value) == null) {
-          return 'Vui lòng nhập đúng định dạng';
+          return 'Vui lòng nhập mô tả sản phẩm';
         }
         return null;
       },
       onSaved: (value) {
-        _editProduct = _editProduct.copyWith(ram: int.tryParse(value!));
-      },
-    );
-  }
-
-  TextFormField _buildRomField() {
-    return TextFormField(
-      controller: _romController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'ROM',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập dung lượng ROM';
-        } else if (int.tryParse(value) == null) {
-          return 'Vui lòng nhập đúng định dạng';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct = _editProduct.copyWith(rom: int.tryParse(value!));
-      },
-    );
-  }
-
-  TextFormField _buildRateField() {
-    return TextFormField(
-      controller: _rateController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'Mức độ đánh giá',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập mức độ đánh giá';
-        } else if (double.tryParse(value) == null) {
-          return 'Vui lòng nhập đúng định dạng';
-        } else if (double.tryParse(value)! > 5.0) {
-          return 'Mức độ đánh giá nhỏ hơn 5.0';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct = _editProduct.copyWith(rate: double.tryParse(value!));
-      },
-    );
-  }
-
-  TextFormField _buildTypeField() {
-    return TextFormField(
-      controller: _typeController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'Loại sản phẩm',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập loại sản phẩm';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct = _editProduct.copyWith(type: value);
-      },
-    );
-  }
-
-  TextFormField _buildScreenSizeField() {
-    return TextFormField(
-      controller: _screenSizeController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'Kích thước màn hình',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập kích thước màn hình';
-        } else if (double.tryParse(value) == null) {
-          return 'Vui lòng nhập đúng định dạng';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct =
-            _editProduct.copyWith(screenSize: double.tryParse(value!));
-      },
-    );
-  }
-
-  TextFormField _buildCpuField() {
-    return TextFormField(
-      controller: _cpuController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'CPU',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập CPU';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct = _editProduct.copyWith(cpu: value);
-      },
-    );
-  }
-
-  TextFormField _buildGpuField() {
-    return TextFormField(
-      controller: _gpuController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'GPU',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập GPU';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct = _editProduct.copyWith(gpu: value);
-      },
-    );
-  }
-
-  TextFormField _buildCapacityField() {
-    return TextFormField(
-      controller: _capacityController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'Dung lượng pin',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập dung lượng pin';
-        } else if (int.tryParse(value) == null) {
-          return 'Vui lòng nhập đúng định dạng';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct = _editProduct.copyWith(capacity: int.tryParse(value!));
-      },
-    );
-  }
-
-  TextFormField _buildOperatingSystemField() {
-    return TextFormField(
-      controller: _operatingSystemController,
-      cursorColor: Colors.black,
-      decoration: const InputDecoration(
-        labelText: 'Hệ điều hành',
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Vui lòng nhập hệ điều hành';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _editProduct = _editProduct.copyWith(operatingSystem: value);
+        _editProduct = _editProduct.copyWith(description: value);
       },
     );
   }
