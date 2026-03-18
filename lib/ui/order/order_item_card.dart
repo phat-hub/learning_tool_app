@@ -16,40 +16,37 @@ class OrderItemCard extends StatefulWidget {
 class _OrderItemCardState extends State<OrderItemCard> {
   @override
   Widget build(BuildContext context) {
-    final authManager = Provider.of<AuthManager>(context);
-    final user = authManager.getUserDetails();
+    return buildCard(context);
+  }
 
-    return user['role'] == 'admin'
-        ? Dismissible(
-            key: ValueKey(widget.order.id),
-            background: Container(
-              color: Theme.of(context).colorScheme.error,
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(right: 20),
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-              child: const Icon(
-                Icons.delete,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-            direction: DismissDirection.endToStart,
-            confirmDismiss: (direction) {
-              return showConfirmDialog(
-                context,
-                'Bạn có chắc chắn muốn xóa đơn hàng này không?',
-              );
-            },
-            onDismissed: (direction) {
-              context.read<OrdersManager>().clearItem(widget.order.id!);
-            },
-            child: buildCard(context),
-          )
-        : buildCard(
-            context); // Nếu không phải admin, chỉ trả về Card bình thường
+  String _getStatusText(String status) {
+    switch (status) {
+      case 'pending':
+        return 'Chờ xác nhận';
+      case 'confirmed':
+        return 'Đã xác nhận';
+      case 'cancelled':
+        return 'Đã hủy';
+      default:
+        return '';
+    }
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'pending':
+        return Colors.orange;
+      case 'confirmed':
+        return Colors.green;
+      case 'cancelled':
+        return Colors.red;
+      default:
+        return Colors.black;
+    }
   }
 
   Widget buildCard(BuildContext context) {
+    final user = context.watch<AuthManager>().getUserDetails();
     return Card(
       margin: EdgeInsets.all(10),
       child: Padding(
@@ -151,15 +148,63 @@ class _OrderItemCardState extends State<OrderItemCard> {
             SizedBox(height: 10),
             Align(
               alignment: Alignment.bottomRight,
-              child: Text(
-                'Tổng tiền: ${NumberFormat.decimalPattern().format(widget.order.amount)} VND',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'Tổng tiền: ${NumberFormat.decimalPattern().format(widget.order.amount)} VND',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+
+                  const SizedBox(height: 5),
+
+                  /// ⭐ STATUS
+                  Text(
+                    _getStatusText(widget.order.status),
+                    style: TextStyle(
+                      color: _getStatusColor(widget.order.status),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
+            const SizedBox(height: 10),
+
+            /// 👤 USER - HỦY ĐƠN
+            if (user['role'] != 'admin' && widget.order.status == 'pending')
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    context
+                        .read<OrdersManager>()
+                        .updateStatus(widget.order.id!, 'cancelled');
+                  },
+                  child: const Text(
+                    'Hủy đơn',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+
+            /// 👨‍💼 ADMIN - XÁC NHẬN
+            if (user['role'] == 'admin' && widget.order.status == 'pending')
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    context
+                        .read<OrdersManager>()
+                        .updateStatus(widget.order.id!, 'confirmed');
+                  },
+                  child: const Text('Xác nhận'),
+                ),
+              ),
           ],
         ),
       ),

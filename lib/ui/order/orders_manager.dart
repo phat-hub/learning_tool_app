@@ -14,6 +14,17 @@ class OrdersManager with ChangeNotifier {
     return [..._orders];
   }
 
+  Future<void> updateStatus(String id, String status) async {
+    final index = _orders.indexWhere((o) => o.id == id);
+    if (index >= 0) {
+      final success = await _orderService.updateOrderStatus(id, status);
+      if (success) {
+        _orders[index] = _orders[index].copyWith(status: status);
+        notifyListeners();
+      }
+    }
+  }
+
   Future<void> addOrder(List<CartItem> cartProducts, double total, String name,
       String phoneNumber, String address) async {
     final newOrder = OrderItem(

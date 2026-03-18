@@ -45,7 +45,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                 children: [
                   const SizedBox(width: 8),
 
-                  /// 🔍 SEARCH BOX
+                  /// SEARCH BOX
                   Expanded(
                     child: Container(
                       height: 42,
@@ -71,7 +71,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                               decoration: const InputDecoration(
                                 hintText: 'Tìm sản phẩm...',
                                 border: InputBorder.none,
-                                isCollapsed: true, // ⭐ QUAN TRỌNG: fix lệch
+                                isCollapsed: true, // fix lệch
                               ),
                               onSubmitted: (value) {
                                 context
@@ -87,7 +87,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
 
                   const SizedBox(width: 8),
 
-                  /// 🛒 CART
+                  /// CART
                   ShoppingCartButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed('/cart_screen');

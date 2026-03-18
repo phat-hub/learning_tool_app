@@ -15,6 +15,7 @@ class OrderService {
           'name': order.name,
           'phoneNumber': order.phoneNumber,
           'address': order.address,
+          'status': 'pending',
         },
       );
 
@@ -54,6 +55,18 @@ class OrderService {
     } catch (error) {
       print("Lỗi khi xóa CartItem: '${error}'");
       return false; // Trả về false khi gặp lỗi
+    }
+  }
+
+  Future<bool> updateOrderStatus(String id, String status) async {
+    try {
+      final pb = await getPocketbaseInstance();
+      await pb.collection('orders').update(id, body: {
+        'status': status,
+      });
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
