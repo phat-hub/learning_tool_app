@@ -23,7 +23,6 @@ class _UserProudctTileState extends State<UserProudctTile> {
       leading: CircleAvatar(
         backgroundImage: NetworkImage(widget.product.imageURL1),
       ),
-      subtitle: Text('Type: ${widget.product.description}'),
       trailing: SizedBox(
         width: 100,
         child: Row(
@@ -65,10 +64,6 @@ class _UserProudctTileState extends State<UserProudctTile> {
         ),
       ),
     );
-  }
-
-  String? _getUserProductId() {
-    return widget.product.id;
   }
 }
 

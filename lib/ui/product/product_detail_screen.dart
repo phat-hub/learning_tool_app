@@ -50,33 +50,67 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             children: [
               Silder(widget: widget),
               Container(
-                //color: Colors.blue,
-                padding: EdgeInsets.only(left: 15, right: 5, top: 15),
+                margin: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    /// ❤️ FAVORITE + PRICE
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        /// PRICE
                         Text(
                           '${NumberFormat.decimalPattern().format(widget.product.price)} VNĐ',
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
+
+                        /// FAVORITE
+                        FavoriteButton(widget: widget),
                       ],
                     ),
-                    SizedBox(height: 10),
+
+                    const SizedBox(height: 10),
+
+                    /// TITLE
                     Text(
-                      '${widget.product.title}',
-                      style: Theme.of(context).textTheme.titleLarge,
+                      widget.product.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        specifications(widget: widget),
-                      ],
+
+                    const SizedBox(height: 12),
+
+                    /// DESCRIPTION
+                    Text(
+                      widget.product.description,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                        height: 1.5,
+                      ),
                     ),
-                    SizedBox(height: 70),
+
+                    const SizedBox(height: 70),
                   ],
                 ),
               )
@@ -229,8 +263,6 @@ class _ProductModalState extends State<ProductModal> {
 
   @override
   Widget build(BuildContext context) {
-    bool isSmallScreen = MediaQuery.of(context).size.width < 600;
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -369,68 +401,6 @@ class BuyButton extends StatelessWidget {
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
-    );
-  }
-}
-
-class specifications extends StatelessWidget {
-  const specifications({
-    super.key,
-    required this.widget,
-  });
-
-  final ProductDetailScreen widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      height: 300,
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            width: 0.5,
-          )),
-      padding: EdgeInsets.all(20),
-      child: ListView(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-                child: Container(
-                  child: Table(
-                    //border: TableBorder.all(),
-                    children: [
-                      TableRow(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                        ),
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('Mô tả sản phẩm: '),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: Text('${widget.product.description}'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
