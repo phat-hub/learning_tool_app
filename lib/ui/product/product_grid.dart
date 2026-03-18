@@ -9,11 +9,17 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final products = context.select<ProductManager, List<Product>>(
-        (productManager) =>
-            showFavorite ? productManager.favoriteItems : productManager.items);
-    // final products =
-    //     showFavorite ? productManager.favoriteItems : productManager.items;
+    final products = context.watch<ProductManager>().items;
+
+    if (products.isEmpty) {
+      return const Center(
+        child: Text(
+          'Không có sản phẩm phù hợp',
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,

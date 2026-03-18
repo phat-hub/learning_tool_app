@@ -5,6 +5,22 @@ import '../screen.dart';
 class ProductManager with ChangeNotifier {
   final ProductsService _productsService = ProductsService();
   List<Product> _item = [];
+  String _searchQuery = '';
+
+  void setSearchQuery(String query) {
+    _searchQuery = query.toLowerCase();
+    notifyListeners();
+  }
+
+  List<Product> get filteredItems {
+    if (_searchQuery.isEmpty) {
+      return [..._item];
+    }
+
+    return _item.where((product) {
+      return product.title.toLowerCase().contains(_searchQuery);
+    }).toList();
+  }
 
   bool isFavoriteById(String id) {
     return _item.firstWhere((item) => item.id == id).isFavorite;
@@ -15,7 +31,7 @@ class ProductManager with ChangeNotifier {
   }
 
   List<Product> get items {
-    return [..._item];
+    return filteredItems;
   }
 
   List<Product> get favoriteItems {

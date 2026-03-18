@@ -14,6 +14,7 @@ class OverViewScreen extends StatefulWidget {
 class _OverViewScreenState extends State<OverViewScreen> {
   int _selectIndex = 0;
   late Future<void> _fetchProducts;
+  final TextEditingController _searchController = TextEditingController();
 
   final List<Widget> _pages = [
     ProductGrid(false),
@@ -39,12 +40,59 @@ class _OverViewScreenState extends State<OverViewScreen> {
     return Scaffold(
       appBar: _selectIndex == 0
           ? AppBar(
+              titleSpacing: 0,
               title: Row(
                 children: [
-                  const Spacer(),
-                  ShoppingCartButton(onPressed: () {
-                    Navigator.of(context).pushNamed('/cart_screen');
-                  }),
+                  const SizedBox(width: 8),
+
+                  /// 🔍 SEARCH BOX
+                  Expanded(
+                    child: Container(
+                      height: 42,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search,
+                              size: 20, color: Colors.grey),
+
+                          const SizedBox(width: 8),
+
+                          /// TEXTFIELD
+                          Expanded(
+                            child: TextField(
+                              controller: _searchController,
+                              textInputAction: TextInputAction.search,
+                              style: const TextStyle(fontSize: 14),
+                              decoration: const InputDecoration(
+                                hintText: 'Tìm sản phẩm...',
+                                border: InputBorder.none,
+                                isCollapsed: true, // ⭐ QUAN TRỌNG: fix lệch
+                              ),
+                              onSubmitted: (value) {
+                                context
+                                    .read<ProductManager>()
+                                    .setSearchQuery(value);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 8),
+
+                  /// 🛒 CART
+                  ShoppingCartButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/cart_screen');
+                    },
+                  ),
                 ],
               ),
             )
@@ -52,6 +100,12 @@ class _OverViewScreenState extends State<OverViewScreen> {
       drawer: const AppDrawer(),
       body: RefreshIndicator(
         onRefresh: () async {
+          _searchController.clear();
+
+          /// RESET SEARCH
+          context.read<ProductManager>().setSearchQuery('');
+
+          /// LOAD LẠI DATA
           await context.read<ProductManager>().fetchProduct();
         },
         color: Color(0xFFFFA52D),
