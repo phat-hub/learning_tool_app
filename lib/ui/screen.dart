@@ -26,6 +26,7 @@ export 'order/payment_screen.dart';
 export 'order/orders_manager.dart';
 export 'order/order_item_card.dart';
 export 'order/payment_item_card.dart';
+export 'order/revenue_screen.dart';
 export '../model/order_item.dart';
 
 export 'shared/app_drawer.dart';

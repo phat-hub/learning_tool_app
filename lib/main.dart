@@ -110,6 +110,7 @@ class MyApp extends StatelessWidget {
               '/order_screen': (ctx) => const SafeArea(
                     child: OrdersScreen(),
                   ),
+              '/revenue': (ctx) => const RevenueScreen(),
             },
             onGenerateRoute: (settings) {
               switch (settings.name) {

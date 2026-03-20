@@ -50,6 +50,14 @@ class AppDrawer extends StatelessWidget {
             ),
             if (user['role'] == 'admin')
               ListTile(
+                leading: const Icon(Icons.bar_chart),
+                title: const Text('Doanh thu'),
+                onTap: () {
+                  Navigator.of(context).pushReplacementNamed('/revenue');
+                },
+              ),
+            if (user['role'] == 'admin')
+              ListTile(
                 leading: const Icon(Icons.edit),
                 title: const Text('Quản lý sản phẩm'),
                 onTap: () {
