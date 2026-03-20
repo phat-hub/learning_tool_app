@@ -89,11 +89,9 @@ class ProductGridTile extends StatelessWidget {
                       color: Colors.red,
                     ),
                     onPressed: () {
-                      context.read<ProductManager>().updateProduct(
-                            product.copyWith(
-                              isFavorite: !product.isFavorite,
-                            ),
-                          );
+                      context
+                          .read<ProductManager>()
+                          .toggleFavorite(product.id!);
                     },
                   ),
                 ],

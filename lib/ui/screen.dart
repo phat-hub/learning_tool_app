@@ -7,7 +7,6 @@ export 'product/product_manager.dart';
 export 'product/product_grid.dart';
 export 'product/product_grid_tile.dart';
 export 'product/user_proudct_tile.dart';
-export 'product/favorite_manager.dart';
 export '../model/product.dart';
 
 export 'auth/auth_information_screen.dart';

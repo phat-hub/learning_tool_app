@@ -7,6 +7,9 @@ class ProductManager with ChangeNotifier {
   List<Product> _item = [];
   String _searchQuery = '';
 
+  final FavoritesService _favoritesService = FavoritesService();
+  Set<String> _favoriteProductIds = {};
+
   void setSearchQuery(String query) {
     _searchQuery = query.toLowerCase();
     notifyListeners();
@@ -75,6 +78,37 @@ class ProductManager with ChangeNotifier {
 
   Future<void> fetchProduct() async {
     _item = await _productsService.fetchProducts();
+
+    _favoriteProductIds = await _favoritesService.getUserFavorites();
+
+    // map lại isFavorite
+    _item = _item.map((product) {
+      return product.copyWith(
+        isFavorite: _favoriteProductIds.contains(product.id),
+      );
+    }).toList();
+
+    notifyListeners();
+  }
+
+  Future<void> toggleFavorite(String productId) async {
+    await _favoritesService.toggleFavorite(productId);
+
+    if (_favoriteProductIds.contains(productId)) {
+      _favoriteProductIds.remove(productId);
+    } else {
+      _favoriteProductIds.add(productId);
+    }
+
+    _item = _item.map((product) {
+      if (product.id == productId) {
+        return product.copyWith(
+          isFavorite: !product.isFavorite,
+        );
+      }
+      return product;
+    }).toList();
+
     notifyListeners();
   }
 

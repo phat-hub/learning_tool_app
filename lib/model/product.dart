@@ -87,7 +87,6 @@ class Product {
       'title': title,
       'price': price,
       'description': description,
-      'isFavorite': isFavorite,
     };
   }
 

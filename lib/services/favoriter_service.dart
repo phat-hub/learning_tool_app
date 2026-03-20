@@ -1,27 +1,34 @@
-import 'package:pocketbase/pocketbase.dart';
+import '../ui/screen.dart';
 
-class FavoriteService {
-  final PocketBase pb;
+class FavoritesService {
+  Future<Set<String>> getUserFavorites() async {
+    final pb = await getPocketbaseInstance();
+    final userId = pb.authStore.record!.id;
 
-  FavoriteService(this.pb);
-
-  /// Lấy danh sách favorite theo user
-  Future<List<RecordModel>> fetchFavorites(String userId) async {
-    return await pb.collection('favorites').getFullList(
-          filter: 'user = "$userId"',
+    final result = await pb.collection('favorites').getFullList(
+          filter: "userId = '$userId'",
         );
+
+    return result.map((e) => e.getStringValue('productId')).toSet();
   }
 
-  /// Thêm favorite
-  Future<RecordModel> addFavorite(String userId, String productId) async {
-    return await pb.collection('favorites').create(body: {
-      'user': userId,
-      'product': productId,
-    });
-  }
+  Future<void> toggleFavorite(String productId) async {
+    final pb = await getPocketbaseInstance();
+    final userId = pb.authStore.record!.id;
 
-  /// Xóa favorite
-  Future<void> deleteFavorite(String favoriteId) async {
-    await pb.collection('favorites').delete(favoriteId);
+    final existing = await pb.collection('favorites').getFullList(
+          filter: "userId = '$userId' && productId = '$productId'",
+        );
+
+    if (existing.isNotEmpty) {
+      // đã thích → xoá
+      await pb.collection('favorites').delete(existing.first.id);
+    } else {
+      // chưa thích → thêm
+      await pb.collection('favorites').create(body: {
+        'userId': userId,
+        'productId': productId,
+      });
+    }
   }
 }

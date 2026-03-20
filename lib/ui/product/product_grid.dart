@@ -9,8 +9,10 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final products = context.watch<ProductManager>().items;
+    final productManager = context.watch<ProductManager>();
 
+    final products =
+        showFavorite ? productManager.favoriteItems : productManager.items;
     if (products.isEmpty) {
       return const Center(
         child: Text(

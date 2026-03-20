@@ -85,7 +85,13 @@ class MyApp extends StatelessWidget {
               ),
             ),
             home: authManager.isAuth
-                ? const SafeArea(child: OverViewScreen())
+                ? Builder(
+                    builder: (ctx) {
+                      ctx.read<ProductManager>().fetchProduct();
+
+                      return const SafeArea(child: OverViewScreen());
+                    },
+                  )
                 : FutureBuilder(
                     future: authManager.tryAutoLogin(),
                     builder: (ctx, snapshot) {
